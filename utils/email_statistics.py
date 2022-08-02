@@ -25,9 +25,28 @@ class Statistics_Entry:
         self.phish_result = phish_result
 
     def __str__(self):
-        return f"""Name: {self.file_name} \nAccess: {self.access_number} \nAccount: {self.account_number}\n
-                   Alert: {self.alert_number} \nClick: {self.click_number} \nConfidential: {self.confidential_number}\n
-                   Fradulent: {self.fradulent_number} \nIndefinite: {self.indefinite_number} \nInformation: {self.information_number}\n
-                   Notification: {self.notification_number} \nPassword: {self.password_number} \nPlease: {self.please_number}\n
-                   Provide: {self.provide_number} \nRequest: {self.request_number} \nUpdate: {self.update_number}\n
-                   Verify: {self.verify_number} \nPhishing {self.phish_result}"""
+        return f"""Name: {self.file_name}
+                   Access: {self.access_number}
+                   Account: {self.account_number}
+                   Alert: {self.alert_number}
+                   Click: {self.click_number} 
+                   Confidential: {self.confidential_number}
+                   Fradulent: {self.fradulent_number} 
+                   Indefinite: {self.indefinite_number} 
+                   Information: {self.information_number}
+                   Notification: {self.notification_number} 
+                   Password: {self.password_number} 
+                   Please: {self.please_number}
+                   Provide: {self.provide_number} 
+                   Request: {self.request_number} 
+                   Update: {self.update_number}
+                   Verify: {self.verify_number} 
+                   Phishing {self.phish_result}"""
+
+    def __iter__(self):
+        return iter([self.file_name, self.access_number, self.account_number,
+                     self.alert_number, self.click_number, self.confidential_number,
+                     self.fradulent_number, self.indefinite_number, self.information_number,
+                     self.notification_number, self.password_number, self.please_number,
+                     self.provide_number, self.request_number, self.update_number,
+                     self.upgrade_number, self.verify_number, self.phish_result])

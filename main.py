@@ -1,9 +1,12 @@
-import email
+
 from constants import constants
+from utils import csv_creator
 from utils import email_creation
 
 
-def main():
+
+def create_email_contents():
+    print("Currently creating email contents and names lists....")
     phishing_strings = []
     email_names = []
     for path in constants.PHISHING_FILES:
@@ -16,9 +19,16 @@ def main():
     
     ham_contents, ham_names = email_creation.parse_directory(constants.HAM_PATH)
 
-    for name in ham_names:
-        email_names.append(name)
+    for i in range(len(ham_contents)):
+        phishing_strings.append(ham_contents[i])
+        email_names.append(ham_names[i])
 
-    print(len(email_names))
+    return email_names, phishing_strings
+
+def main():
+    email_names, phishing_strings = create_email_contents()
+    all_stats = csv_creator.create_email_stats(email_names, phishing_strings)
+    
+    csv_creator.convert_to_csv(all_stats)
 
 main()
