@@ -18,11 +18,13 @@ def create_email_contents():
             phishing_strings.append(phishing_contents[i])
             email_names.append(phishing_names[i])
     
-    ham_contents, ham_names = parse_directory(constants.HAM_PATH)
+    for path in constants.HAM_FILES:
+        ham_email_directory = f"{constants.HAM_PATH}\\{path}"
+        ham_contents, ham_names = parse_directory(ham_email_directory)
 
-    for i in range(len(ham_contents)):
-        phishing_strings.append(ham_contents[i])
-        email_names.append(ham_names[i])
+        for i in range(len(ham_contents)):
+            phishing_strings.append(ham_contents[i])
+            email_names.append(ham_names[i])
     end = time.perf_counter()
     print(Fore.GREEN+ f"Success! Completed in: {end-start:0.4f} seconds")
     return email_names, phishing_strings
@@ -40,14 +42,13 @@ def parse_directory(dir):
             message = msg.as_string()
             texts.append(message)
 
-            if "_phishing" in file_name:
-                file = file_name.split('_phishing\\')
+            if "phishing" in file_name:
+                file = file_name.split('phishing_emails\\')
             elif "ham" in file_name:
-                file = file_name.split("ham\\")
+                file = file_name.split("ham_emails\\")
             file_names.append(file[1])
         except:
             print(f"Error on file: {file_name}")
-            #print("Exception")
            
     return texts, file_names
 

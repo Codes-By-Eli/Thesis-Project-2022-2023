@@ -1,6 +1,8 @@
-#Eventually convert into relative paths that can be stored in GitHub Repository
-HAM_PATH = r'C:\Users\imyug\OneDrive - Iona College\Honors Classes\HON401\Petrovic Work\Datasets\ham'
-PHISHING_PATH = r'C:\Users\imyug\OneDrive - Iona College\Honors Classes\HON401\Petrovic Work\Datasets\emails(phishing)\public_phishing'
-PHISHING_FILES = ['20051114',  'phishing0', 'phishing2', 'phishing3']
+import os
+HAM_PATH = './modules/emails/ham_emails'
+HAM_FILES = os.listdir(HAM_PATH)
+
+PHISHING_PATH = './modules/emails/phishing_emails'
+PHISHING_FILES = os.listdir(PHISHING_PATH)
 
 CSV_PATH = './modules/csv/ham_and_phish.csv'
