@@ -9,6 +9,7 @@ def parse_directory(dir):
     for fle in folder_in_directory:
         file_name = f"{dir}\\{fle}"       
         try:
+            #print(f"Parsing file: {file_name}")
             msg = email.message_from_file(open(file_name))
             message = msg.as_string()
             texts.append(message)
@@ -19,7 +20,7 @@ def parse_directory(dir):
                 file = file_name.split("ham\\")
             file_names.append(file[1])
         except:
-            print(dir + '\\'+ fle)
-            print("Exception")
+            print(f"Error on file: {file_name}")
+            #print("Exception")
            
     return texts, file_names
