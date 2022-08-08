@@ -1,0 +1,53 @@
+from colorama import Fore
+import email
+import os
+import time
+
+from ..constants import constants
+
+def create_email_contents():
+    print(Fore.YELLOW+ f"Currently creating email contents and names lists....")
+    start = time.perf_counter()
+    phishing_strings = []
+    email_names = []
+    for path in constants.PHISHING_FILES:
+        phishing_email_directory = f"{constants.PHISHING_PATH}\\{path}"
+        phishing_contents, phishing_names = parse_directory(phishing_email_directory)
+
+        for i in range(len(phishing_contents)):
+            phishing_strings.append(phishing_contents[i])
+            email_names.append(phishing_names[i])
+    
+    ham_contents, ham_names = parse_directory(constants.HAM_PATH)
+
+    for i in range(len(ham_contents)):
+        phishing_strings.append(ham_contents[i])
+        email_names.append(ham_names[i])
+    end = time.perf_counter()
+    print(Fore.GREEN+ f"Success! Completed in: {end-start:0.4f} seconds")
+    return email_names, phishing_strings
+
+def parse_directory(dir):
+    file_names = []
+    texts = []
+    folder_in_directory = os.listdir(dir)
+
+    for fle in folder_in_directory:
+        file_name = f"{dir}\\{fle}"       
+        try:
+            #print(f"Parsing file: {file_name}")
+            msg = email.message_from_file(open(file_name))
+            message = msg.as_string()
+            texts.append(message)
+
+            if "_phishing" in file_name:
+                file = file_name.split('_phishing\\')
+            elif "ham" in file_name:
+                file = file_name.split("ham\\")
+            file_names.append(file[1])
+        except:
+            print(f"Error on file: {file_name}")
+            #print("Exception")
+           
+    return texts, file_names
+

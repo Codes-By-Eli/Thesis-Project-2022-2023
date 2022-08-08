@@ -11,7 +11,7 @@ from nltk.stem.porter import PorterStemmer
 import time
 
 from . import email_statistics
-from constants import constants
+from ..constants import constants
 
 #Have to add logic to to nltk.pos_tag and append info gathered from there to the get_stats, probably pass the results as a parameter to the dictionary
 def perform_pos_tags(tokenized):
