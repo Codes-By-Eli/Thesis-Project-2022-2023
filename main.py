@@ -1,3 +1,5 @@
+from colorama import Fore
+import time
 
 from constants import constants
 from utils import csv_creator
@@ -6,7 +8,8 @@ from utils import email_creation
 
 
 def create_email_contents():
-    print("Currently creating email contents and names lists....")
+    print(Fore.YELLOW+ f"Currently creating email contents and names lists....")
+    start = time.perf_counter()
     phishing_strings = []
     email_names = []
     for path in constants.PHISHING_FILES:
@@ -22,7 +25,8 @@ def create_email_contents():
     for i in range(len(ham_contents)):
         phishing_strings.append(ham_contents[i])
         email_names.append(ham_names[i])
-
+    end = time.perf_counter()
+    print(Fore.GREEN+ f"Success! Completed in: {end-start:0.4f} seconds")
     return email_names, phishing_strings
 
 def main():

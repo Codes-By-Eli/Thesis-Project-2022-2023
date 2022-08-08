@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from colorama import Fore
 import csv
 import nltk
 import pandas as pd
@@ -7,9 +8,26 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 from nltk.probability import FreqDist
 from nltk.stem.porter import PorterStemmer
+import time
 
 from . import email_statistics
 from constants import constants
+
+#Have to add logic to to nltk.pos_tag and append info gathered from there to the get_stats, probably pass the results as a parameter to the dictionary
+def perform_pos_tags(tokenized):
+    verbs =["VB", "VBG", "VBD", "VBN", "VBP", "VBZ"]
+    total_verbs = 0
+    total_words = len(tokenized)
+    tagged_words = nltk.pos_tag(tokenized)
+    for word in tagged_words:
+        if word[1] in verbs:
+            total_verbs += 1
+    if(total_words == 0):
+        percentage_of_verbs = 0
+    else:
+        percentage_of_verbs = round(total_verbs/total_words * 100, 2)
+    stats = {"Verb %": percentage_of_verbs}
+    return stats
 
 def clean_html(html):
     soup = BeautifulSoup(html, features="lxml")
@@ -43,7 +61,7 @@ def stemming_words(clean_words):
 def perform_statistics(stemmed):
     stats = {}
     word_check = ["account", "inform", "updat", "pleas", "secur", "alert",
-                  "request", "click", "fradul", "notif", "upgrad", "indefinit",
+                  "request", "click", "fraudul", "notif", "upgrad", "indefinit",
                   "access", "password", "verif", "provid", "confidenti"]
     for el in word_check:
         stats.update({el: 0})
@@ -56,12 +74,15 @@ def parse_email(email):
     no_tags_in_email = clean_html(email)
     no_punctuations = remove_punctuations(no_tags_in_email)
     no_stopwords = remove_stopwords(no_punctuations)
+    verb_percentage = perform_pos_tags(no_stopwords)
     stemmed_words = stemming_words(no_stopwords)
     email_statistics = perform_statistics(stemmed_words)
+    email_statistics.update(verb_percentage)
     return email_statistics
 
 def create_email_stats(name_of_emails,contents_of_emails):
-    print("Currently creating email stats....")
+    print(Fore.YELLOW+ f"Currently creating email stats....")
+    start = time.perf_counter()
     all_email_stats = []
     #Create an entry object here with all the headers of the columns
     initial_entry = email_statistics.Statistics_Entry("File", "Access", "Account",
@@ -69,9 +90,11 @@ def create_email_stats(name_of_emails,contents_of_emails):
                                                       "Fradulent", "Indefinite", "Information",
                                                       "Notification", "Password", "Please",
                                                       "Provide", "Request", "Update",
-                                                      "Upgrade", "Verify", "Result")
+                                                      "Upgrade", "Verb %", "Verify", "Result")
     all_email_stats.append(initial_entry)
     for i in range(len(contents_of_emails)):
+        #print(Fore.BLUE + f"Name of file currently being parsed: {name_of_emails[i]}")
+
         converted_content = contents_of_emails[i].lower()
         phishing = 1
         if "ham" in name_of_emails[i]:
@@ -88,17 +111,23 @@ def create_email_stats(name_of_emails,contents_of_emails):
         #create stat_entry and append to all_email_stats
         entry = email_statistics.Statistics_Entry(email_stats["Name"], email_stats["access"], email_stats["account"], 
                                                   email_stats["alert"], email_stats["click"], email_stats["confidenti"],
-                                                  email_stats["fradul"], email_stats["indefinit"], email_stats["inform"], 
+                                                  email_stats["fraudul"], email_stats["indefinit"], email_stats["inform"], 
                                                   email_stats["notif"], email_stats["password"], email_stats["pleas"], 
                                                   email_stats["provid"], email_stats["request"], email_stats["updat"], 
-                                                  email_stats["upgrad"], email_stats["verif"], email_stats["Phishing"])
+                                                  email_stats["upgrad"], email_stats["Verb %"], email_stats["verif"], email_stats["Phishing"])
         all_email_stats.append(entry)
+    end = time.perf_counter()
+    print(Fore.GREEN+ f"Success! Completed in: {end-start:0.4f} seconds")
     return all_email_stats
 
 def convert_to_csv(stats):
+    print(Fore.YELLOW+ f"Currently converting to .csv .....")
+    start = time.perf_counter()
     with open(constants.CSV_PATH, "w") as stream:
         writer = csv.writer(stream)
         writer.writerows(stats)
-    
+
+    end = time.perf_counter()
+    print(Fore.GREEN+ f"Success! Completed in: {end-start:0.4f} seconds")    
     df = pd.read_csv(constants.CSV_PATH)
     print(df.head())

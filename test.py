@@ -1,15 +1,15 @@
-from utils.email_statistics import Statistics_Entry
+import nltk
 
-stats = {}
-word_check = ["account", "inform", "updat", "pleas", "secur", "alert",
-              "request", "click", "fradul", "notif", "upgrad", "indefinit",
-              "access", "password", "verif", "provid", "confidenti"]
+sen = "I love my family"
 
-for el in word_check:
-    stats.update({el: 0})
-    stats[el] += 1
+tokenized = nltk.tokenize.word_tokenize(sen)
 
-entry = Statistics_Entry("hi", stats["access"], stats["account"], stats["alert"], stats["click"], stats["confidenti"],
-                         stats["fradul"], stats["indefinit"], stats["inform"], stats["notif"], stats["password"],
-                         stats["pleas"], stats["provid"], stats["request"], stats["updat"], stats["upgrad"], stats["verif"], 0)
-print(entry)
+group = nltk.pos_tag(tokenized)
+
+total_words = 0
+
+for el in group:
+    print(el[1])
+    total_words += 1
+
+print(total_words)
