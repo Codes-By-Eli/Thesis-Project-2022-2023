@@ -1,7 +1,7 @@
 # Title: Identification of Phishing Emails through Dataset Creation and Machine Learning
 
 ## Motivation Behind Research
-    * During my research into topics, there were many studies conducted on phishing websites with machine learning to determine phishing websites but not many did analysis into the contents of actual phishing emails to determine validity.
+* During my research into topics, there were many studies conducted on phishing websites with machine learning to determine phishing websites but not many did analysis into the contents of actual phishing emails to determine validity.
 ## Raw Data
 * Phishing Emails
     * Taken from the phishing corpus
