@@ -15,18 +15,45 @@ from ..constants import constants
 
 #Have to add logic to to nltk.pos_tag and append info gathered from there to the get_stats, probably pass the results as a parameter to the dictionary
 def perform_pos_tags(tokenized):
-    verbs =["VB", "VBG", "VBD", "VBN", "VBP", "VBZ"]
+    verbs = ["VB", "VBG", "VBD", "VBN", "VBP", "VBZ"]
     total_verbs = 0
+
+    nouns = ["NN", "NNS", "NNP", "NNPS", "PRP", "PRP$", "WP"]
+    total_nouns = 0
+
+    adjectives = ["JJ", "JJR", "JJS"]
+    total_adjectives = 0
+
+    adverbs = ["RB", "RBR", "RBS", "WH"]
+    total_adverbs = 0
+
     total_words = len(tokenized)
     tagged_words = nltk.pos_tag(tokenized)
     for word in tagged_words:
         if word[1] in verbs:
             total_verbs += 1
+        elif word[1] in nouns:
+            total_nouns += 1
+        elif word[1] in adjectives:
+            total_adjectives += 1
+        elif word[1] in adverbs:
+            total_adverbs += 1
     if(total_words == 0):
         percentage_of_verbs = 0
+        percentage_of_nouns = 0
+        percentage_of_adjectives = 0
+        percentage_of_adverbs = 0
     else:
         percentage_of_verbs = round(total_verbs/total_words * 100, 2)
-    stats = {"Verb %": percentage_of_verbs}
+        percentage_of_nouns = round(total_nouns/total_words * 100, 2)
+        percentage_of_adjectives = round(total_adjectives/total_words * 100, 2)
+        percentage_of_adverbs = round(total_adverbs/total_words * 100, 2)
+    stats = {
+            "Noun %": percentage_of_nouns,
+            "Verb %": percentage_of_verbs,
+            "Adjective %": percentage_of_adjectives,
+            "Adverb %": percentage_of_adverbs
+            }
     return stats
 
 def clean_html(html):
@@ -90,7 +117,9 @@ def create_email_stats(name_of_emails,contents_of_emails):
                                                       "Fradulent", "Indefinite", "Information",
                                                       "Notification", "Password", "Please",
                                                       "Provide", "Request", "Update",
-                                                      "Upgrade", "Verb %", "Verify", "Result")
+                                                      "Upgrade",  "Verify", "Verb %", 
+                                                      "Noun %", "Adjective %", "Adverb %",
+                                                      "Result")
     all_email_stats.append(initial_entry)
     for i in range(len(contents_of_emails)):
         #print(Fore.BLUE + f"Name of file currently being parsed: {name_of_emails[i]}")
@@ -114,7 +143,9 @@ def create_email_stats(name_of_emails,contents_of_emails):
                                                   email_stats["fraudul"], email_stats["indefinit"], email_stats["inform"], 
                                                   email_stats["notif"], email_stats["password"], email_stats["pleas"], 
                                                   email_stats["provid"], email_stats["request"], email_stats["updat"], 
-                                                  email_stats["upgrad"], email_stats["Verb %"], email_stats["verif"], email_stats["Phishing"])
+                                                  email_stats["upgrad"], email_stats["verif"], email_stats["Verb %"], 
+                                                  email_stats["Noun %"], email_stats["Adjective %"], email_stats["Adverb %"],
+                                                  email_stats["Phishing"])
         all_email_stats.append(entry)
     end = time.perf_counter()
     print(Fore.GREEN+ f"Success! Completed in: {end-start:0.4f} seconds")
