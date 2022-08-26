@@ -4,7 +4,8 @@ class Statistics_Entry:
                 indefinite_number, information_number, notification_number, 
                 password_number, please_number, provide_number, 
                 request_number, update_number, upgrade_number, 
-                verb_percentage, verify_number, phish_result):
+                verify_number, verb_percentage, noun_percentage, 
+                adjective_percentage, adverb_percentage, phish_result):
         self.file_name = file_name
         self.access_number = access_number
         self.account_number = account_number
@@ -21,8 +22,11 @@ class Statistics_Entry:
         self.request_number = request_number
         self.update_number = update_number
         self.upgrade_number = upgrade_number
-        self.verb_percentage = verb_percentage
         self.verify_number = verify_number
+        self.verb_percentage = verb_percentage
+        self.noun_percentage = noun_percentage
+        self.adjective_percentage = adjective_percentage
+        self.adverb_percentage = adverb_percentage
         self.phish_result = phish_result
 
     def __str__(self):
@@ -41,8 +45,11 @@ class Statistics_Entry:
                    Provide: {self.provide_number} 
                    Request: {self.request_number} 
                    Update: {self.update_number}
+                   Verify: {self.verify_number}
                    Verb: {self.verb_percentage}
-                   Verify: {self.verify_number} 
+                   Noun: {self.noun_percentage}
+                   Adjective: {self.adjective_percentage}
+                   Adverb: {self.adverb_percentage} 
                    Phishing {self.phish_result}"""
 
     def __iter__(self):
@@ -51,5 +58,6 @@ class Statistics_Entry:
                      self.fradulent_number, self.indefinite_number, self.information_number,
                      self.notification_number, self.password_number, self.please_number,
                      self.provide_number, self.request_number, self.update_number,
-                     self.upgrade_number, self.verb_percentage, self.verify_number, 
+                     self.upgrade_number,  self.verify_number, self.verb_percentage,
+                     self.noun_percentage, self.adjective_percentage, self.adverb_percentage,
                     self.phish_result])
