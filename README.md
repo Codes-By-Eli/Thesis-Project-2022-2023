@@ -57,11 +57,11 @@
 
 | Analysis Technique | Accuracy (%) |
 | :----------------: | :------: |
-| Decision Tree      | 91.2     |
-| KNN (Split)        | 92.6     |
-| KNN (Cross-Val)    | 90.2     |
-| SVM                | 91.3     |
-| Linear Regression  | 88.3     |
+| Decision Tree      | 93.5     |
+| KNN (Split)        | 93.5     |
+| KNN (Cross-Val)    | 92.0     |
+| SVM                | 90.5     |
+| Linear Regression  | 90.6     |
 
 ## Obstacles
 
