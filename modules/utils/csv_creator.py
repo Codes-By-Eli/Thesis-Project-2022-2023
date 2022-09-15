@@ -135,18 +135,22 @@ def create_email_stats(name_of_emails,contents_of_emails):
         split_contents = converted_content.split(split_phrase)
         message_body = split_contents[1]
         email_stats = parse_email(message_body)
-        email_stats.update({"Name": name_of_emails[i], "Phishing": phishing})
 
-        #create stat_entry and append to all_email_stats
-        entry = email_statistics.Statistics_Entry(email_stats["Name"], email_stats["access"], email_stats["account"], 
-                                                  email_stats["alert"], email_stats["click"], email_stats["confidenti"],
-                                                  email_stats["fraudul"], email_stats["indefinit"], email_stats["inform"], 
-                                                  email_stats["notif"], email_stats["password"], email_stats["pleas"], 
-                                                  email_stats["provid"], email_stats["request"], email_stats["updat"], 
-                                                  email_stats["upgrad"], email_stats["verif"], email_stats["Verb %"], 
-                                                  email_stats["Noun %"], email_stats["Adjective %"], email_stats["Adverb %"],
-                                                  email_stats["Phishing"])
-        all_email_stats.append(entry)
+        if email_stats["Noun %"] == 0:
+            print(f"File Not Formatted: {name_of_emails[i]}")
+        else:
+            email_stats.update({"Name": name_of_emails[i], "Phishing": phishing})
+
+            #create stat_entry and append to all_email_stats
+            entry = email_statistics.Statistics_Entry(email_stats["Name"], email_stats["access"], email_stats["account"], 
+                                                    email_stats["alert"], email_stats["click"], email_stats["confidenti"],
+                                                    email_stats["fraudul"], email_stats["indefinit"], email_stats["inform"], 
+                                                    email_stats["notif"], email_stats["password"], email_stats["pleas"], 
+                                                    email_stats["provid"], email_stats["request"], email_stats["updat"], 
+                                                    email_stats["upgrad"], email_stats["verif"], email_stats["Verb %"], 
+                                                    email_stats["Noun %"], email_stats["Adjective %"], email_stats["Adverb %"],
+                                                    email_stats["Phishing"])
+            all_email_stats.append(entry)
     end = time.perf_counter()
     print(Fore.GREEN+ f"Success! Completed in: {end-start:0.4f} seconds")
     return all_email_stats
